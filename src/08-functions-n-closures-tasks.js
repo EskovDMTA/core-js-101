@@ -96,7 +96,7 @@ function memoize(/* func */) {
  *
  * @example
  * const attempt = 0, retryer = retry(() => {
- *      if (++attempt % 2) throw new Error('test');
+ *      if (++attempt % 2) throw new Error('test.js');
  *      else return attempt;
  * }, 2);
  * retryer() => 2

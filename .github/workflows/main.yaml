@@ -20,4 +20,4 @@ jobs:
     - name: check styles
       run: npm run lint
     - name: run tests
-      run: npm run test
+      run: npm run test.js
