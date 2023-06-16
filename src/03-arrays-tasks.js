@@ -464,12 +464,14 @@ function sortCitiesArray(arr) {
   return arr.sort((a, b) => {
     if (a.country < b.country) {
       return -1;
-    } if (a.country > b.country) {
+    }
+    if (a.country > b.country) {
       return 1;
     }
     if (a.city < b.city) {
       return -1;
-    } if (a.city > b.city) {
+    }
+    if (a.city > b.city) {
       return 1;
     }
     return 0;
@@ -562,8 +564,19 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-
+function group(array, keySelector, valueSelector) {
+  const map = new Map();
+  array.reduce((_, item) => {
+    const key = keySelector(item);
+    const value = valueSelector(item);
+    if (!map.has(key)) {
+      map.set(key, []);
+    }
+    map.get(key).push(value);
+    return undefined;
+  },
+  null);
+  return map;
 }
 
 
@@ -580,8 +593,11 @@ function group(/* array, keySelector, valueSelector */) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], (x) => x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  return arr.reduce((result, item) => {
+    const child = childrenSelector(item);
+    return result.concat(child);
+  }, []);
 }
 
 
@@ -597,8 +613,8 @@ function selectMany(/* arr, childrenSelector */) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  return indexes.reduce((accum, index) => accum[index], arr);
 }
 
 
@@ -620,8 +636,13 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  if (arr.length <= 1) return arr;
+  const midIndex = Math.floor(arr.length / 2);
+  const isEven = arr.length % 2 === 0;
+  const head = arr.slice(0, midIndex);
+  const tail = arr.slice(isEven ? midIndex : midIndex + 1);
+  return [...tail, ...(isEven ? [] : [arr[midIndex]]), ...head];
 }
 
 
